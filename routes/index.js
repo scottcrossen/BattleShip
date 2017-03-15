@@ -8,23 +8,26 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.sendFile('index.html', { root:  'public' });
 });
+var jsonExample={
+  board: [
+           [0,1,0],
+           [0],
+           [1,0],
+           [1],
+           [1,1,1,0,0,0],
+           [0,0,0,1,1,1],
+           []
+         ],
+  turn: 0,
+  player0: "Player name",
+  player1: "Player name",
+  session: "abcdefg"
+}
 router.get('/board',function(req,res,next) {
-  var jsonresult={
-    board: [
-             [0,1,0],
-             [0],
-             [1,0],
-             [1],
-             [1,1,1,0,0,0],
-             [0,0,0,1,1,1],
-             []
-           ],
-    turn: 0,
-    player0: "Player name",
-    player1: "Player name",
-    session: "abcdefg"
-  }
-  res.status(200).json(jsonresult);
+  res.status(200).json(jsonExample);
+});
+router.post('/board',function(req,res,next){
+  res.status(200).json(jsonExample);
 });
 
 module.exports = router;
