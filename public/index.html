@@ -8,17 +8,18 @@
 
 <body>
 <form id="postForm" action="">
-<label for="body">Body: </label><input type="text" id="body" placeholder="Body"><br>
+<label for="session">Session: </label><input type="text" id="session" placeholder="Session ID"><br>
+<label for="column">Columnn: </label><input type="int" id="column" placeholder="Column"><br>
+<label for="player">Player: </label><input type="int" id="player" placeholder="Player"><br>
 </form>
-<button id="poster">Post</button>
-<form id="postForm" action="">
-<label for="query">Session: </label><input type="text" id="query" placeholder="Query"><br>
+<button id="postButton">Post</button>
+<form id="getForm" action="">
+<label for="session">Session: </label><input type="text" id="query" placeholder="Session ID"><br>
 </form>
-<button id="getter">Get</button>
-<br>
-Request: <div id="json"></div>
-Status: <div id="status"></div>
-Response: <div id="response"></div>
+<button id="getButton">Get</button>
+<div id="json"></div>
+<div id="done"></div>
+<div id="response"></div>
 </body>
 </html>
 
