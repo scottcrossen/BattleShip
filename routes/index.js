@@ -6,7 +6,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.sendFile('weather.html', { root:  'public' });
+  res.sendFile('index.html', { root:  'public' });
 });
 router.get('/board',function(req,res,next) {
   var jsonresult=[];
@@ -16,7 +16,7 @@ router.get('/board',function(req,res,next) {
     column3: [1,0],
     column4: [1],
     column5: [1,1,1,2,2,2],
-    column6: [2,2,2,1,1,1]
+    column6: [2,2,2,1,1,1],
     column7: [],
     turn: "Player name",
     session: "abcdefg"
