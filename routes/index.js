@@ -51,7 +51,7 @@ router.get('/board',function(req,res,next) {
     if (err) return console.error(err);
     else {
       console.log(boardList);
-      res.status(200),json(jsonExample);
+      res.status(200).json(jsonExample);
     }
   });
 });

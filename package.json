@@ -12,6 +12,7 @@
     "ejs": "~2.3.3",
     "express": "~4.13.1",
     "forever": "^0.15.3",
+    "mongoose": "^4.9.0",
     "morgan": "~1.6.1",
     "request": "^2.80.0",
     "serve-favicon": "~2.3.0"
