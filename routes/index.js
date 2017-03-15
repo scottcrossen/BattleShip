@@ -1,10 +1,7 @@
 var express = require('express');
-//var fs = require('fs');
-//var request = require('request');
-//var EventEmitter = require('events').EventEmitter;
 var router = express.Router();
-var mongoose = require('mongoose'); 
 
+var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/connectFourDB'); 
 
 var connectFourSchema = mongoose.Schema({ 
