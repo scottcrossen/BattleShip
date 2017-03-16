@@ -22,6 +22,11 @@ function modalSubmit() {
   name = $('#name').val()
   gameID = $('#gameID').val()
 
+  if (name == '' || gameID == '') {
+    $('#alert').html('<div class="alert alert-warning">Name and game ID cannot be left blank.</div>');
+    return
+  }
+
   if ($('#newGame').is(':checked')) {
     var data = {
       "session" : gameID,
