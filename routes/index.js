@@ -22,6 +22,18 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Connect Four' });
 });
 
+router.get('/tester', function(req, res, next) {
+  res.render('tester', { title: 'Connect Four' });
+});
+
+router.get('/win', function(req, res, next) {
+  res.render('win', { title: 'Connect Four' });
+});
+
+router.get('/lose', function(req, res, next) {
+  res.render('lose', { title: 'Connect Four' });
+});
+
 add_to_column=function(board, column, player){
   if(board[column].length<6)
     board[column].push(player);
