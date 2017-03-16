@@ -14,7 +14,7 @@ function doModal() {
 }
 
 function closeModal(){
-  setInterval(getBoard, 5000)
+  setInterval(getBoard, 3000)
   runPage()
 }
 
@@ -88,7 +88,7 @@ function modalSubmit() {
         }
       },
       failure: function(){
-        console.log('server error. Try again');
+        console.log('Server error. Try again');
       }
     })
   }
@@ -102,6 +102,9 @@ function getBoard() {
     success: function(json) {
       console.log("Board Recieved");
       paintBoard(json)
+    },
+    failure: function(){
+      console.log('Server error. Try again');
     }
   })
 }
@@ -121,11 +124,12 @@ function paintBoard(json) {
     }
   }
   $('#turn').text("Player "+((turn+1)==1? "One":"Two")+"'s Turn");
+  $('#prompt').text(((turn==player)? "It's your turn. Go ahead and move!":"It's not your turn. You're going to have to wait for the other player."));
+  testFinish();
 }
 
 function runPage() {
   turn = 0
-
   $('.col1').click(function() {
     if (turn == player)
     {
@@ -188,6 +192,83 @@ function madeMove(col) {
     },
     success: function() {
       getBoard()
+    },
+    failure: function(){
+      console.log('server error. Try again');
     }
   })
+}
+
+function testFinish(){
+  test_horizontal=function(x,y,player){
+    if(x<4){
+      var found_win=true;
+      for(var i=x; i<x+4; i++){
+        if(board[i][y] != player){
+          found_win=false;
+          break;
+        }
+      }
+    return found_win;
+    } else return false;
+  }
+  test_vertical=function(x,y,player){
+    if(y<3){
+      var found_win=true;
+      for(var i=y; i<y+4; i++){
+        if(board[x][i] != player){
+          found_win=false;
+          break;
+        }
+      }
+    return found_win;
+    } else return false;
+  }
+  test_diagonal_1=function(x,y,player){
+    if(x<4 && y<3){
+      var found_win=true;
+      for(var i=0; i<4; i++){
+        if(board[x+i][y+i] != player){
+          found_win=false;
+          break;
+        }
+      }
+    return found_win;
+    } else return false;
+  }
+  test_diagonal_2=function(x,y,player){
+    if(x>2 && y<3){
+      var found_win=true;
+      for(var i=0; i<4; i++){
+        if(board[x-i][y+i] != player){
+          found_win=false;
+          break;
+        }
+      }
+    return found_win;
+    } else return false;
+  }
+  for(var play=0; play<=1; play++){
+    for (var i = 0; i < board.length; i++) {
+      for (var j = 0; j < board[i].length; j++) {
+        console.log("testing ("+i.toString()+","+j.toString()+")");
+        if(test_horizontal(i,j,play) || test_vertical(i,j,play) || test_diagonal_1(i,j,play) || test_diagonal_2(i,j,play)){
+          endGame();
+          if(play==player) win();
+          else lose();
+          j=board[i].length;
+          i=board.length;
+          play=1;
+          break;
+        }
+      }
+    }
+  }
+}
+function endGame(){}
+function win(){
+  window.location = "/win";
+}
+function lose(){
+  window.location="/lose";
 }

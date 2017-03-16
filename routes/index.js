@@ -23,15 +23,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/tester', function(req, res, next) {
-  res.render('tester',{ title: 'Connect Four'});
+  res.render('tester',{ title: 'Testing Platform'});
 });
 
 router.get('/win', function(req, res, next) {
-  res.render('win', { title: 'Connect Four' });
+  res.render('finish', { title: 'You Win!!' });
 });
 
 router.get('/lose', function(req, res, next) {
-  res.render('lose', { title: 'Connect Four' });
+  res.render('finish', { title: 'You Lose.' });
 });
 
 add_to_column=function(board, column, player){
