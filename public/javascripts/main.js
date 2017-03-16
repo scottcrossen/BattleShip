@@ -24,18 +24,21 @@ function modalSubmit() {
 
   if ($('#newGame').is(':checked')) {
     var data = {
-      "Session" : gameID,
-      "Player0" : name
+      "session" : gameID,
+      "player0" : name,
+      "turn": 0
     }
     $.ajax({
-      url: '/',
+      url: '/board',
       method: 'POST',
       contentType: "application/json;odata=verbose",
       data: JSON.stringify(data),
       headers: {
         "Accept": "application/json;odata=verbose"
       },
-      success: function() {
+      success: function(res) {
+        console.log("Game Created");
+        console.log(res);
         $('myModal').modal('toggle')
         player = 0
       },
@@ -46,11 +49,11 @@ function modalSubmit() {
   }
   else {
     var data = {
-      "Session" : gameID,
-      "Player1" : name
+      "session" : gameID,
+      "player1" : name
     }
     $.ajax({
-      url: '/board?session=' + gameID,
+      url: '/board',
       method: 'POST',
       contentType: "application/json;odata=verbose",
       data: JSON.stringify(data),
@@ -58,6 +61,8 @@ function modalSubmit() {
         "Accept": "application/json;odata=verbose"
       },
       success: function() {
+        console.log("ajax success");
+        console.log("Game joined");
         $('myModal').modal('toggle')
         player = 1
       },

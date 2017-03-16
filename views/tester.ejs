@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title><%= title %></title>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
 $(document).ready(function(){
   $("#postButton").click(function(){
       var myobj = {session:$("#session").val(),move: {column:parseInt($("#column").val()), player:parseInt($("#player").val())}};
@@ -33,3 +39,26 @@ $(document).ready(function(){
     })
   })
 });
+
+
+
+</script>
+</head>
+
+<body>
+<form id="postForm" action="">
+<label for="session">Session: </label><input type="text" id="session" placeholder="Session ID"><br>
+<label for="column">Columnn: </label><input type="int" id="column" placeholder="Column"><br>
+<label for="player">Player: </label><input type="int" id="player" placeholder="Player"><br>
+</form>
+<button id="postButton">Post</button>
+<form id="getForm" action="">
+<label for="session">Session: </label><input type="text" id="query" placeholder="Session ID"><br>
+</form>
+<button id="getButton">Get</button>
+<div id="json"></div>
+<div id="done"></div>
+<div id="response"></div>
+</body>
+</html>
+

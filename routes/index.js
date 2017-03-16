@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/tester', function(req, res, next) {
-  res.render('tester', { title: 'Connect Four' });
+  res.render('tester',{ title: 'Connect Four'});
 });
 
 router.get('/win', function(req, res, next) {
