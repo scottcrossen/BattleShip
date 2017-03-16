@@ -136,48 +136,85 @@ function paintBoard(json) {
 function runPage() {
   turn = 0
   $('.col1').click(function() {
-    if (turn == player)
+    if (turn == player && board[0].length < 6)
     {
+      dropPiece(0)
       madeMove(0)
+    }
+    if (turn == player && board[0].length == 6)
+    {
+      $('#prompt').text('Column is full. Try a different column.')
     }
   })
   $('.col2').click(function() {
-    if (turn == player)
+    if (turn == player && board[1].length < 6)
     {
+      dropPiece(1)
       madeMove(1)
+    }
+    if (turn == player && board[1].length == 6)
+    {
+      $('#prompt').text('Column is full. Try a different column.')
     }
   })
   $('.col3').click(function() {
-    if (turn == player)
+    if (turn == player && board[2].length < 6)
     {
+      dropPiece(2)
       madeMove(2)
+    }
+    if (turn == player && board[2].length == 6)
+    {
+      $('#prompt').text('Column is full. Try a different column.')
     }
   })
   $('.col4').click(function() {
-    if (turn == player)
+    if (turn == player && board[3].length < 6)
     {
+      dropPiece(3)
       madeMove(3)
+    }
+    if (turn == player && board[3].length == 6)
+    {
+      $('#prompt').text('Column is full. Try a different column.')
     }
   })
   $('.col5').click(function() {
-    if (turn == player)
+    if (turn == player && board[4].length < 6)
     {
+      dropPiece(4)
       madeMove(4)
+    }
+    if (turn == player && board[4].length == 6)
+    {
+      $('#prompt').text('Column is full. Try a different column.')
     }
   })
   $('.col6').click(function() {
-    if (turn == player)
+    if (turn == player && board[5].length < 6)
     {
+      dropPiece(5)
       madeMove(5)
+    }
+    if (turn == player && board[5].length == 6)
+    {
+      $('#prompt').text('Column is full. Try a different column.')
     }
   })
   $('.col7').click(function() {
-    if (turn == player)
+    if (turn == player && board[6].length < 6)
     {
+      dropPiece(6)
       madeMove(6)
+    }
+    if (turn == player && board[6].length == 6)
+    {
+      $('#prompt').text('Column is full. Try a different column.')
     }
   })
 }
+
+function dropPiece(col) {}
 
 function madeMove(col) {
   var data = {
