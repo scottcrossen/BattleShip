@@ -1,4 +1,3 @@
-
 var board
 var gameID
 var name
@@ -12,10 +11,11 @@ $(document).ready(function() {
 
 function doModal() {
   $('#myModal').modal('show')
-  $('#myModal').on('hide.bs.modal', function() {
-    setInterval(getBoard, 5000)
-    runPage()
-  })
+}
+
+function closeModal(){
+  setInterval(getBoard, 5000)
+  runPage()
 }
 
 function modalSubmit() {
@@ -40,8 +40,9 @@ function modalSubmit() {
       success: function(res) {
         console.log("Game Created");
         console.log(res);
-        $('myModal').modal('toggle')
+        $('#myModal').modal('toggle')
         player = 0
+        closeModal();
       },
       failure: function() {
         console.log('Server error. Try again')
@@ -76,8 +77,9 @@ function modalSubmit() {
             success: function(res) {
               console.log("Game joined");
               console.log(res)
-              $('myModal').modal('toggle')
+              $('#myModal').modal('hide')
               player = 1
+              closeModal();
             },
             failure: function() {
               console.log('Server error. Try again');
@@ -98,25 +100,27 @@ function getBoard() {
     method: 'GET',
     headers: { "Accept": "application/json; odata=verbose" },
     success: function(json) {
+      console.log("Board Recieved");
       paintBoard(json)
     }
   })
 }
 
 function paintBoard(json) {
+  console.log("Making Board");
   board = json.board
   turn = json.turn
-  for (var i = 1; i < board.length + 1; i++) {
-    for (var j = 1; j < board[i].length + 1; j++) {
+  for (var i = 0; i < board.length; i++) {
+    for (var j = 0; j < board[i].length; j++) {
       if (board[i][j] == 0) {
-        $('#' + i + j + ' .circle').css('background', 'red')
+        $('#' + (j+1).toString() + (i+1).toString() + ' .circle').css('background', 'red')
       }
       if (board[i][j] == 1) {
-        $('#' + i + j + ' .circle').css('background', 'black')
+        $('#' + (j+1).toString() + (i+1).toString() + ' .circle').css('background', 'black')
       }
     }
   }
-
+  $('#turn').text("Player "+((turn+1)==1? "One":"Two")+"'s Turn");
 }
 
 function runPage() {
@@ -125,57 +129,57 @@ function runPage() {
   $('.col1').click(function() {
     if (turn == player)
     {
-      madeMove(1)
+      madeMove(0)
     }
   })
   $('.col2').click(function() {
     if (turn == player)
     {
-      madeMove(2)
+      madeMove(1)
     }
   })
   $('.col3').click(function() {
     if (turn == player)
     {
-      madeMove(3)
+      madeMove(2)
     }
   })
   $('.col4').click(function() {
     if (turn == player)
     {
-      madeMove(4)
+      madeMove(3)
     }
   })
   $('.col5').click(function() {
     if (turn == player)
     {
-      madeMove(5)
+      madeMove(4)
     }
   })
   $('.col6').click(function() {
     if (turn == player)
     {
-      madeMove(6)
+      madeMove(5)
     }
   })
   $('.col7').click(function() {
     if (turn == player)
     {
-      madeMove(7)
+      madeMove(6)
     }
   })
 }
 
 function madeMove(col) {
   var data = {
-    "Session" : gameID,
-    "Move" : {
-      "Player" : player,
-      "Column" : col
+    "session" : gameID,
+    "move" : {
+      "player" : player,
+      "column" : col
     }
   }
   $.ajax({
-    url: '/board?session=' + gameID,
+    url: '/board',
     method: 'POST',
     contentType: "application/json;odata=verbose",
     data: JSON.stringify(data),
