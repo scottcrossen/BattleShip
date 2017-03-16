@@ -22,59 +22,70 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Connect Four' });
 });
 
-addcol=function(board, column, player){
+add_to_column=function(board, column, player){
   if(board[column].length<6)
     board[column].push(player);
   return board;
 }
 
+check_format=function(body){
+  var output ={};
+  if(body.board != undefined && body.board != null && typeof(body.board)==='object' && body.board.length==7){
+    var good_board=true;
+    for(var i=0; i<7; i++){
+      if(typeof(body.board[i]) != "object" || body.board[i].length==undefined || body.board[i].length == null || body.board[i].length>=7 || body.board[i].length<0){ good_board=false; break;}
+      for(var j=0; j<body.board[i].length; j++){
+        if(typeof(body.board[i][j]) != "number" || !(body.board[i][j] == 1 || body.board[i][j] == 0)){good_board=false; break;}
+      }
+    }
+    if(good_board==true) output.board=body.board;
+  }
+  if(body.turn != undefined && body.turn != null && typeof(body.turn)==='number' && (body.turn === 0 || body.turn===1)) output.turn=body.turn;
+  if(body.session != undefined && body.session != null && typeof(body.session)==='string' && body.session.length <25) output.session=body.session;
+  if(body.player0 != undefined && body.player0 != null && typeof(body.player0)==='string' && body.player0.length <25) output.player0=body.player0;
+  if(body.player1 != undefined && body.player1 != null && typeof(body.player1)==='string' && body.player1.length <25) output.player1=body.player1;
+  return output;
+}
+
 router.post('/board', function(req, res, next) {
-  console.log("POST comment route");
-  console.log(req.body);
-  if(req.body.session == undefined || req.body.session == null) res.sendStatus(500);
+  if(req.body == undefined || req.body == null || typeof(req.body) != 'object' || req.body.session == undefined || req.body.session == null) res.sendStatus(206);
   Board.findOne({'session': req.body.session}, function(error, foundsession) {
     if(foundsession && !error){
       var conditions = { session: req.body.session };
-      if(req.body.move != undefined && req.body.move !=null && req.body.move.player != undefined && req.body.move.player != null && typeof(req.body.move.player) === 'number' && ((req.body.move.player === 0 && foundsession.turn===0) || (req.body.move.player === 1 && foundsession.turn===1)) && req.body.move.column != undefined && req.body.move.column != null && typeof(req.body.move.column) === 'number' && req.body.move.column>=0 && req.body.move.column<=7){
-        console.log(foundsession.board);
-        console.log(req.body.move.column);
-        console.log(req.body.move.player);
-        var update = { $set: { turn: ((req.body.move.player==0)? 1 : 0), board: addcol(foundsession.board, req.body.move.column, req.body.move.player)}};
+      if(req.body.move != undefined && req.body.move != null && typeof(req.body.move) ==='object' && req.body.move.player != undefined && req.body.move.player != null && typeof(req.body.move.player) === 'number' && ((req.body.move.player === 0 && foundsession.turn===0) || (req.body.move.player === 1 && foundsession.turn===1)) && req.body.move.column != undefined && req.body.move.column != null && typeof(req.body.move.column) === 'number' && req.body.move.column>=0 && req.body.move.column<=7){
+        var update = { $set: { turn: ((req.body.move.player==0)? 1 : 0), board: add_to_column(foundsession.board, req.body.move.column, req.body.move.player)}};
+      } else {
+        var update = { $set: check_format(req.body)};
       }
-      else
-        var update = { $set: req.body};
       var options = { multi: true };
-      Board.update(conditions, update, options, function(err,num){});
-      res.sendStatus(200);
+      Board.update(conditions, update, options, function(err,num){
+        if(err) return console.error(err); 
+      });
+      return;
     } else if(!foundsession) {
-      var newboard = new Board(req.body); 
-      console.log(newboard);
+      var newboard = new Board(check_format(req.body)); 
       newboard.save(function(err, post) {
       if (err) return console.error(err);
-        console.log(post);
-        Board.findOne({'session': newboard.session}, function(err,foundboard) {
-          if (err) return console.error(err);
-          else {
-            console.log(foundboard);
-            res.json(foundboard);
-          }
-        })
-        res.sendStatus(200);
+      return;
       });
     } else {
-      console.log(error);
-      res.sendStatus(500);
+      console.error(error);
+      return;
     }
   });
+  Board.findOne({'session': req.body.session}, function(err,foundboard) {
+    if (err) return console.error(err);
+    else {
+      res.json(foundboard);
+    }
+  })
 });
 
 router.get('/board',function(req, res, next) {
   console.log("In the GET route?");
-  console.log(req.query);
   Board.findOne({'session': req.query.session}, function(err,foundboard) {
     if (err) return console.error(err);
     else {
-      console.log(foundboard);
       res.json(foundboard);
     }
   })
