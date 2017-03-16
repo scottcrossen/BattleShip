@@ -26,7 +26,8 @@ function modalSubmit() {
     var data = {
       "session" : gameID,
       "player0" : name,
-      "turn": 0
+      "turn": 0,
+      "board": [[],[],[],[],[],[],[]]
     }
     $.ajax({
       url: '/board',
@@ -48,26 +49,44 @@ function modalSubmit() {
     })
   }
   else {
-    var data = {
-      "session" : gameID,
-      "player1" : name
-    }
     $.ajax({
-      url: '/board',
-      method: 'POST',
-      contentType: "application/json;odata=verbose",
-      data: JSON.stringify(data),
-      headers: {
-        "Accept": "application/json;odata=verbose"
+      url: '/board?session=' + gameID,
+      method: 'GET',
+      headers: { "Accept": "application/json; odata=verbose" },
+      success: function(json) {
+        console.log("Finding board:");
+        console.log(json);
+        if(json==null || json==undefined){
+          console.log("Board not found");
+          $('#alert').html('<div class="alert alert-warning">Game ID does not exist. Please create a new game or try again.</div>');
+        }
+        else {
+          var data = {
+            "session" : gameID,
+            "player1" : name
+          }
+          $.ajax({
+            url: '/board',
+            method: 'POST',
+            contentType: "application/json;odata=verbose",
+            data: JSON.stringify(data),
+            headers: {
+              "Accept": "application/json;odata=verbose"
+            },
+            success: function(res) {
+              console.log("Game joined");
+              console.log(res)
+              $('myModal').modal('toggle')
+              player = 1
+            },
+            failure: function() {
+              console.log('Server error. Try again');
+            }
+          })
+        }
       },
-      success: function() {
-        console.log("ajax success");
-        console.log("Game joined");
-        $('myModal').modal('toggle')
-        player = 1
-      },
-      failure: function() {
-        $('#alert').html('<div class="alert alert-warning">Game ID does not exist. Please create a new game or try again.</div>')
+      failure: function(){
+        console.log('server error. Try again');
       }
     })
   }
