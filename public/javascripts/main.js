@@ -128,7 +128,8 @@ function paintBoard(json) {
       }
     }
   }
-  $('#turn').text("Player "+((turn+1)==1? "One":"Two")+"'s Turn");
+  //$('#turn').text("Player "+((turn+1)==1? "One":"Two")+"'s Turn");
+  $('#turn').text(((turn+1)==1? json.player0 : json.player1)+"\'s Turn");
   $('#prompt').text(((turn==player)? "It's your turn. Go ahead and move!":"It's not your turn. You're going to have to wait for the other player."));
   testFinish();
 }
