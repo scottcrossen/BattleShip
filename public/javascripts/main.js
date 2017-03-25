@@ -295,7 +295,6 @@ function testFinish(){
       for (var j = 0; j < board[i].length; j++) {
         console.log("testing ("+i.toString()+","+j.toString()+")");
         if(test_horizontal(i,j,play) || test_vertical(i,j,play) || test_diagonal_1(i,j,play) || test_diagonal_2(i,j,play)){
-          endGame();
           if(play==player) win();
           else lose();
           j=board[i].length;
@@ -307,10 +306,21 @@ function testFinish(){
     }
   }
 }
-function endGame(){}
+function endGame(){
+  var url="board?session="+gameID;
+  $.ajax({
+      url: url,
+      type: "DELETE",
+      success: function(data,textStatus){
+         $("#done").html(textStatus);
+      }
+  })
+}
 function win(){
+  //endGame();
   window.location = "/win";
 }
 function lose(){
+  endGame();
   window.location="/lose";
 }

@@ -94,13 +94,16 @@ router.post('/board', function(req, res, next) {
 });
 
 router.get('/board',function(req, res, next) {
-  console.log("In the GET route?");
   Board.findOne({'session': req.query.session}, function(err,foundboard) {
     if (err) return console.error(err);
     else {
       res.json(foundboard);
     }
   })
+});
+
+router.delete('/board', function(req, res, next) {
+  Board.findOne({'session':req.query.session}).remove().exec();
 });
 
 module.exports = router;

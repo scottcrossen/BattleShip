@@ -37,6 +37,17 @@ $(document).ready(function(){
       }
       else $("#response").html("No Session");
     })
+  });
+  $("#deleteButton").click(function(){
+    console.log('board?session='+$("#query").val());
+    var url="board?session="+$("#query").val();
+    $.ajax({
+        url: url,
+        type: "DELETE",
+        success: function(data,textStatus){
+            $("#done").html(textStatus);
+        }
+    })
   })
 });
 
@@ -56,6 +67,7 @@ $(document).ready(function(){
 <label for="session">Session: </label><input type="text" id="query" placeholder="Session ID"><br>
 </form>
 <button id="getButton">Get</button>
+<button id="deleteButton">Delete</button>
 <div id="json"></div>
 <div id="done"></div>
 <div id="response"></div>
